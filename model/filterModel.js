@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const filterSchema = new Schema(
   {
-    name: {
+    filter: {
       type: String,
     },
   },
