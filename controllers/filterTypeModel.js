@@ -44,18 +44,30 @@ const editFilterType = async (req, res) => {
 };
 const getAllFilterType = async (req, res) => {
   try {
-    let response = await filterTypeModel.find();
+    let response = await filterTypeModel.find().populate([
+      {
+        path: "modelId",
+      },
+    ]);
+
+    // Format response to include modelname directly
+    const formattedData = response.map((item) => ({
+      _id: item._id,
+      name: item.name,
+      modelId: item.modelId?._id || null,
+      modelname: item.modelId?.filter || null, // Extract modelname
+    }));
+
     return res.json({
       status: true,
       statusCode: 200,
-      data: response,
+      data: formattedData,
     });
   } catch (err) {
-    let message = err && err.message ? err.message : "Something went wrong";
     return res.json({
       status: false,
       statusCode: 400,
-      message: message,
+      message: err?.message || "Something went wrong",
       error: err,
     });
   }
@@ -63,7 +75,11 @@ const getAllFilterType = async (req, res) => {
 const viewFilterType = async (req, res) => {
   try {
     let FilterId = req.params.id;
-    let response = await filterTypeModel.findOne({ _id: FilterId });
+    let response = await filterTypeModel.findOne({ _id: FilterId }).populate([
+      {
+        path: "modelId",
+      },
+    ]);;
     if (response) {
       return res.json({
         status: true,
