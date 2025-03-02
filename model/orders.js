@@ -28,37 +28,32 @@ const orderItemSchema = new Schema({
     type: Number,
     required: true,
   },
-  orderStatus: {
-    type: String,
-    enum: ["Pending", "Completed", "Cancelled"],
-    default: "Pending",
-  },
 });
 
 const ordersSchema = new Schema(
   {
     orderItems: [orderItemSchema], // Array of objects
-    billImage: {
-      type: String, // Store file path or URL of the bill image
-    },
-    invoiceImage: {
-      type: String, // Store file path or URL of the invoice image
-    },
-    driverName: {
+    orderStatus: {
       type: String,
-      required: true,
     },
-    carNumber: {
-      type: String,
-      required: true,
-    },
-    driverAdharCard: {
-      type: String, // Adhar card number as a string
-      required: true,
-    },
+    // billImage: {
+    //   type: String, 
+    // },
+    // invoiceImage: {
+    //   type: String,
+    // },
+    // driverName: {
+    //   type: String,
+    // },
+    // carNumber: {
+    //   type: String,
+    // },
+    // driverAdharCard: {
+    //   type: String,
+    // },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 

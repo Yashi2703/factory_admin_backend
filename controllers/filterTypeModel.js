@@ -1,5 +1,6 @@
 const filterTypeModel = require("../model/filterType");
-
+const filterModel  = require("../model/filterModel")
+const mongoose = require("mongoose");
 const addFilterType = async (req, res) => {
   try {
     let data = req.body;
@@ -43,6 +44,7 @@ const editFilterType = async (req, res) => {
   }
 };
 const getAllFilterType = async (req, res) => {
+  console.log("yashiyahsi")
   try {
     let response = await filterTypeModel.find().populate([
       {
@@ -74,30 +76,37 @@ const getAllFilterType = async (req, res) => {
 };
 const viewFilterType = async (req, res) => {
   try {
-    let FilterId = req.params.id;
-    let response = await filterTypeModel.findOne({ _id: FilterId }).populate([
-      {
-        path: "modelId",
-      },
-    ]);;
+    let FilterId = req.params.id; // Yeh filterModel ka _id hai
+    console.log(FilterId, "FilterId");
+
+    let response = await filterTypeModel.find({ modelId: FilterId }).populate("modelId"); // `modelId` se fetch karo
+
     if (response) {
+      console.log(response, "responsev");
       return res.json({
         status: true,
         statusCode: 200,
-        data: response,
+        data: response, // Data response bhejo
       });
-      // return res.json.status(200).({message:"schedules info",data:response})
+    } else {
+      return res.json({
+        status: false,
+        statusCode: 404,
+        message: "Filter Type not found",
+      });
     }
   } catch (error) {
-    let message = err && err.message ? err.message : "Something went wrong";
+    console.log(error, "errorororor");
     return res.json({
       status: false,
-      statusCode: 400,
-      message: message,
-      error: err,
+      statusCode: 500,
+      message: "Something went wrong",
+      error: error,
     });
   }
 };
+
+
 const deletFilterType = async (req, res) => {
   try {
     let FilterId = req.params.id;
